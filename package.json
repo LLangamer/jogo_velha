@@ -1,0 +1,24 @@
+{
+  "name": "jogo_velha",
+  "version": "1.0.0",
+  "description": "um jogo da velha muito legal",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LLangamer/jogo_velha.git"
+  },
+  "author": "lucaslangamerdacruz@hotmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LLangamer/jogo_velha/issues"
+  },
+  "homepage": "https://github.com/LLangamer/jogo_velha#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "pg": "^6.1.0"
+  }
+}
