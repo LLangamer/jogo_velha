@@ -1,0 +1,39 @@
+<DOCTYPE html>
+<html>
+<head>
+	<title>Calculadora</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.7.0/vue-resource.js"></script>
+	<meta charset="UTF-8">
+	<script></script>
+</head>
+<body>
+<h1 style="text-align:center">Vamos Calcular?</h1>
+
+<div id="app">
+	<p>{{message}}</p>
+	<p>{{v1}}+{{v2}}</p>
+  <p>Digite o primeiro valor: <input type="text" v-model="v1"><br>Digite o segundo valor: <input type="text" v-model="v2"><br><button @click="calcular(v1,v2)" >Calcular</button>A soma é igual à: {{resultado}}</p>
+
+  
+  
+</div>
+<script>
+	new Vue({
+	el: '#app',
+	data: {
+    message: 'Hello Vue.js!',
+    v1: '',
+	v2: '',
+	resultado:''
+  },
+  methods:{
+	calcular:function(v1,v2){
+  
+	this.resultado=parseInt(v1)+parseInt(v2)
+  }
+}})
+</script>
+</body>
+
+</html>

@@ -14,9 +14,10 @@ const client = new pg.Client(connectionString);
 client.connect();
 
 //definindo as rotas
-router.get('/api/v1/todos', (req, res, next) => {
+router.get('/api/v1/inserir/:nome', (req, res, next) => {
   const results = [];
   // Grab data from http request
+  const nome = req.params.nome;
   const data = {text: req.body.text, complete: false};
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -28,7 +29,7 @@ router.get('/api/v1/todos', (req, res, next) => {
     }
     // SQL Query > Insert Data
     client.query('INSERT INTO jogador(nome) values($1)',
-    ['Lucas']);
+    [nome]);
     // SQL Query > Select Data
     const query = client.query('SELECT * FROM jogador ORDER BY id ASC');
     // Stream results back one row at a time
@@ -100,7 +101,8 @@ router.get('/api/v1/todos/:todo_id/:todo_nome', (req, res, next) => {
     });
   });
 });
-router.get('/api/v1/pesquisa/:id', (req, res, next) => {
+router.get('/api/v1/pesquisa', (req, res, next) => {
+	res.setHeader('Access-Control-Allow-Origin','*');
   const results = [];
   // Grab data from the URL parameters
   const id = req.params.id;
@@ -116,8 +118,8 @@ router.get('/api/v1/pesquisa/:id', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Update Data
-    const query =client.query('SELECT * FROM jogador WHERE id=($1)',
-    [id]);
+    const query =client.query('SELECT * FROM jogador '
+    );
     // SQL Query > Select Data
     
     // Stream results back one row at a time
