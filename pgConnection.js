@@ -8,16 +8,25 @@ const router = express.Router();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 const pg = require('pg');
 const connectionString = process.env.DATABASE_URL || 'postgres://postgres:ifg@localhost:5432/curso_node';
 const client = new pg.Client(connectionString);
 client.connect();
 
 //definindo as rotas
-router.get('/api/v1/inserir/:nome', (req, res, next) => {
+router.post('/api/v1/inserir', (req, res, next) => {
+
+	console.log(req.body);
+	
   const results = [];
   // Grab data from http request
-  const nome = req.params.nome;
+  
   const data = {text: req.body.text, complete: false};
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -29,7 +38,7 @@ router.get('/api/v1/inserir/:nome', (req, res, next) => {
     }
     // SQL Query > Insert Data
     client.query('INSERT INTO jogador(nome) values($1)',
-    [nome]);
+    [req.body.nome]);
     // SQL Query > Select Data
     const query = client.query('SELECT * FROM jogador ORDER BY id ASC');
     // Stream results back one row at a time

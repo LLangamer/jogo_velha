@@ -4,6 +4,27 @@
     <link rel="stylesheet" type="text/css" href="estilo.css"/> 
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>	
 	<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
+	<style>
+	table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+	}
+
+	td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+	}
+
+	tr:nth-child(even) {
+    background-color: #dddddd;
+	}
+	li{
+		text-decoration:none!important;
+	}
+	</style>
+	
 	<title>Jogo Da velha</title>
 </head>
 <body>
@@ -12,13 +33,30 @@
 		<div id="mostrador">
 		<p style="float:left; margin-right:10px;">Vez do Jogador</p>
 		<img src="" border="0" height="60">
-		<p>Nome do Jogador:&nbsp<input type="text" name="nome" v-model='nome'>&nbsp<input type="submit"></p>
-		{{nome}}
+		<p>Nome do Jogador:<input type="text"  name="nome" v-model="nome" ><button @click="enviar">Enviar</button></input ></p>
 		<div >
 		<p><button @click="buscar()">Buscar</button></p>
-		{{ message }}
+		
+		
+		<table>
+		<tr>
+		<th>Código</th>
+		<th>Nome</th>
+		</tr>
+		<tr v-for="item in message.data">
+		
+		<td>{{item.id}}</td>
+		<td>{{item.nome}}</td>
+		</tr>
+		</table>
+		
+		
+		
 		</div>
+		
+        
 		</div>
+    
         <div class="tabuleiro">
                 <div id="a1" class="espaco" jogada=""></div>
                 <div id="a2" class="espaco" jogada=""></div>
@@ -34,8 +72,8 @@
             
         </div>
 		
-		
 		</div>
+		
 		<script>var app = new Vue({
 			el: '#app',
 			data: {
@@ -44,6 +82,13 @@
 			id:'',
 			
 		},
+		created:function(){
+			this.$http.get('http://localhost:3000/api/v1/pesquisa').then(response =>{
+			console.log(response.data);
+			this.message = response;
+			},response =>{
+			});
+		},
 		methods:{
 			buscar:function(){
 				alert('Ok');
@@ -51,10 +96,25 @@
 					this.message = response;
 					},response =>{
 				});
+			},
+			
+			
+			enviar:function(){
+				//alert('Ok');
+				//this.$http.post('http://localhost:3000/api/v1/inserir',{'nome':'nome'});
+				this.$http.post('http://localhost:3000/api/v1/inserir', {nome: this.nome}).then(response =>{
+					this.message = response;
+					},response =>{
+				});
 			}
 		}
+			
+		
+		
+
 		
 		})</script>
+		
 		<script type="text/javascript" src="sript.js"></script>
 </body>
 
