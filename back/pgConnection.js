@@ -8,10 +8,23 @@ const router = express.Router();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
 });
 
 const pg = require('pg');
@@ -52,10 +65,12 @@ router.post('/api/v1/inserir', (req, res, next) => {
     });
   });
 });
-router.get('/api/v1/todos/:todo_nome', (req, res, next) => {
+router.delete('/api/v1/deletar/:todo_id', (req, res, next) => {
+	
   const results = [];
   // Grab data from the URL parameters
-  const nome = req.params.todo_nome;
+  const id = req.params.todo_id;
+ 
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
     // Handle connection errors
@@ -65,7 +80,7 @@ router.get('/api/v1/todos/:todo_nome', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Delete Data
-    client.query('DELETE FROM jogador WHERE nome=($1)', [nome]);
+    client.query('DELETE FROM jogador WHERE id=($1)', [id]);
     // SQL Query > Select Data
     var query = client.query('SELECT * FROM jogador ORDER BY id ASC');
     // Stream results back one row at a time
@@ -79,10 +94,12 @@ router.get('/api/v1/todos/:todo_nome', (req, res, next) => {
     });
   });
 });
-router.get('/api/v1/todos/:todo_id/:todo_nome', (req, res, next) => {
+router.put('/api/v1/atualizar/:todo_id', (req, res, next) => {
+	
   const results = [];
   // Grab data from the URL parameters
   const id = req.params.todo_id;
+  console.log(req.body.nome);
    const nome = req.params.todo_nome;
   // Grab data from http request
   const data = {text: req.body.text, complete: req.body.complete};
@@ -96,7 +113,7 @@ router.get('/api/v1/todos/:todo_id/:todo_nome', (req, res, next) => {
     }
     // SQL Query > Update Data
     client.query('UPDATE jogador SET nome=($1) WHERE id=($2)',
-    [nome , id]);
+    [req.body.nome , id]);
     // SQL Query > Select Data
     const query = client.query("SELECT * FROM jogador ORDER BY id ASC");
     // Stream results back one row at a time

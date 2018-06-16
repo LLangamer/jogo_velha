@@ -1,24 +1,28 @@
 <DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="estilo.css"/> 
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>	
 	<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
 	<style>
 	table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
+    font-family: arial, sans-serif !important;
+    border-collapse: collapse !important;
+    width: 100% !important;
 	}
 
 	td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
+    border: 1px solid #dddddd !important;
+    text-align: left !important;
+    padding: 8px !important;
 	}
 
 	tr:nth-child(even) {
-    background-color: #dddddd;
+    background-color: #dddddd !important;
 	}
 	li{
 		text-decoration:none!important;
@@ -33,22 +37,42 @@
 		<div id="mostrador">
 		<p style="float:left; margin-right:10px;">Vez do Jogador</p>
 		<img src="" border="0" height="60">
+		</br>
+		</br>
+		</br>
 		<p>Nome do Jogador:<input type="text"  name="nome" v-model="nome" ><button @click="enviar">Enviar</button></input ></p>
 		<div >
-		<p><button @click="buscar()">Buscar</button></p>
+		
 		
 		
 		<table>
 		<tr>
 		<th>Código</th>
 		<th>Nome</th>
+		<th>Opções</th>
 		</tr>
-		<tr v-for="item in message.data">
+		<tr v-for="(item,index) in message.data">
 		
 		<td>{{item.id}}</td>
-		<td>{{item.nome}}</td>
+		<td v-if="exibir!=index">{{item.nome}}</td>
+		<td v-if="exibir===index"><input v-model="item.nome" :value="item.nome"></input></td>
+		<td><button  @click="deletar(item.id)" type="button" class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-trash"></span> Excluir 
+        </button>
+		<button @click="exibirUpdate(index)"type="button" class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-edit"></span> Editar
+        </button>
+		<button v-if="exibir===index" @click="editar(item.id, item)"type="button" class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-save"></span> Salvar
+        </button>
+		<button v-if="exibir===index" @click="exibirUpdate(null)"type="button" class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-remove"></span> Cancelar 
+        </button></td>
+		
 		</tr>
+		
 		</table>
+		
 		
 		
 		
@@ -56,7 +80,7 @@
 		
         
 		</div>
-    
+		</div>
         <div class="tabuleiro">
                 <div id="a1" class="espaco" jogada=""></div>
                 <div id="a2" class="espaco" jogada=""></div>
@@ -72,7 +96,23 @@
             
         </div>
 		
+		<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+		<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modalLabel">Excluir Item</h4>
 		</div>
+		<div class="modal-body">
+        Deseja realmente excluir este item?
+		</div>
+		<div class="modal-footer">
+        <a id="confirm" class="btn btn-primary" href="#">Sim</a>
+        <a id="cancel" class="btn btn-default" data-dismiss="modal">N&atilde;o</a>
+		</div>
+		</div>
+		</div>
+		</div> 
 		
 		<script>var app = new Vue({
 			el: '#app',
@@ -80,6 +120,8 @@
 			message: '',
 			nome:'',
 			id:'',
+			exibir:null,
+			
 			
 		},
 		created:function(){
@@ -106,7 +148,31 @@
 					this.message = response;
 					},response =>{
 				});
+			},
+			deletar:function(id){
+				if (confirm('Quer excluir?')) {
+    this.$http.delete('http://localhost:3000/api/v1/deletar/'+id).then(response =>{
+					this.message = response;
+					},response =>{
+				});
+			} else {
+    
 			}
+				
+			},
+			editar:function(id,body){
+			//alert('Salvar')
+				this.$http.put('http://localhost:3000/api/v1/atualizar/' + id,body).then(response =>{
+					this.message = response;
+					this.exibirUpdate(null);
+					},response =>{
+				});
+			},
+			exibirUpdate:function(value){
+				this.exibir = value;
+				
+			},
+			
 		}
 			
 		
