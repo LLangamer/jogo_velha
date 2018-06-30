@@ -1,16 +1,19 @@
 <DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<title>Tabela de Jogadores</title>
+	
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="estilo.css"/> 
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>	
 	<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
 	<style>
 	table {
-	
+	text-align:center;
+	align:center;
     font-family: arial, sans-serif !important;
     border-collapse: collapse !important;
     width: 100% !important;
@@ -28,24 +31,53 @@
 	li{
 		text-decoration:none!important;
 	}
+	#app{
+		margin:auto !important;
+		margin-top:40px !important;
+		width:528px !important;
+		margin-bottom:30px !important;
+	}
 	</style>
 	
-	<title>Jogo Da velha</title>
 </head>
 <body>
-		<div id="app">
+<style>
+		.container-fluid{
+			background-color:green;
+			height:96px;
+			
+		}
+		a:hover{
+			color:white;
+		}
+		.navbar-default .navbar-nav > li > a {
+		color: white;
+		}
 		
-		<div id="mostrador">
-		<p style="float:left; margin-right:10px;">Vez do Jogador</p>
-		<img src="" border="0" height="60">
+	</style>
+</head>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#"><img src="imagens/logo2.png" style="height:70px;"></a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li ><a href="#" style="background-color:green">Página Inicial</a></li>
+      <li ><a href="index3.html" >Jogar</a></li>
+      <li><a href="#">Ver Ranking</a></li>
+      <li><a href="tabela_jogadores.html">Tabela de jogadores</a></li>
+    </ul>
+  </div>
+</nav>
+<div id=app>
+</br>
+</br>
+<p style="text-align:center;">Nome do Jogador:<input type="text"  name="nome" v-model="nome" ><button @click="enviar" >Enviar</button></input ></p>
+		<div>
 		</br>
 		</br>
 		</br>
-		<p>Nome do Jogador:<input type="text"  name="nome" v-model="nome" ><button @click="enviar">Enviar</button></input ></p>
-		<div >
-		
-		
-		
 		<table>
 		<tr>
 		<th>Código</th>
@@ -73,31 +105,10 @@
 		</tr>
 		
 		</table>
-		
-		
-		
-		
-		</div>
-		
-        
 		</div>
 		</div>
-        <div class="tabuleiro">
-                <div id="a1" class="espaco" jogada=""></div>
-                <div id="a2" class="espaco" jogada=""></div>
-				<div id="a3" class="espaco" jogada=""></div>
-				
-				<div id="b1" class="espaco" jogada=""></div>
-				<div id="b2" class="espaco" jogada=""></div>
-				<div id="b3" class="espaco" jogada=""></div>
-				
-				<div id="c1" class="espaco" jogada=""></div>
-				<div id="c2" class="espaco" jogada=""></div>
-				<div id="c3" class="espaco" jogada=""></div>
-            
-        </div>
-		
-		<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
 		<div class="modal-dialog" role="document">
 		<div class="modal-content">
 		<div class="modal-header">
@@ -114,7 +125,7 @@
 		</div>
 		</div>
 		</div> 
-		
+
 		<script>var app = new Vue({
 			el: '#app',
 			data: {
@@ -181,10 +192,9 @@
 
 		
 		})</script>
-		
-		<script type="text/javascript" src="sript.js"></script>
+		<hr>
+		 <footer class="container">
+		<p style="text-align:center;">&copy;2018 - ClienteApp</p>
+	</footer>
 </body>
-
 </html>
-
-

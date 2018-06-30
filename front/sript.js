@@ -68,6 +68,10 @@ async function verificarVencedor(){
 		gameOver=true;
 		await sleep(50);
 		alert("O ganhador foi o:'"+vencedor+"'");
+		this.innerHTML="<div class='alert alert-success'><strong>Success!</strong> Indicates a successful or positive action.</div>";
+		
+		
+		
 	}
 	if((a1!=""&&a2!=""&&a3!=""&&b1!=""&&b2!=""&&b3!=""&&c1!=""&&c2!=""&&c3!="")&&(vencedor=="")){
 		gameOver=true;
